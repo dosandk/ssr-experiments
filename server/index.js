@@ -5,7 +5,7 @@ const app = express();
 const path = require('path');
 const fs = require('fs');
 
-const {ssr, createButton} = require('../client/index');
+const {ssr, buttonComponent} = require('../client/index');
 
 const getIndexFile = () =>
   new Promise((resolve, reject) => {
@@ -19,7 +19,7 @@ app.use('/client', express.static(path.resolve(__dirname, '../client')));
 
 getIndexFile()
   .then(data => {
-    const content = ssr.renderToString(createButton());
+    const content = ssr.renderToString(buttonComponent());
     const response = data
       .replace('<div id="root"></div>', `<div id="root" class="root">${content}</div>`);
 

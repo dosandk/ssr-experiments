@@ -1,17 +1,16 @@
 const isClient = typeof window === 'object' && typeof window.document === 'object';
 
-const createButton = () => {
+const buttonComponent = () => {
   return {
-    _createElement () {
+    createElement () {
       this.$button = document.createElement('div');
 
       this.$button.innerText = 'Click me baby!';
       this.$button.classList.add('button');
-      this.$button.dataset.hasEvent = "true";
 
       return this.$button;
     },
-    _addEventListeners (element) {
+    initEventListeners (element) {
       const currentElement = element || document.querySelector('.button');
       let counter = 0;
 
@@ -19,16 +18,15 @@ const createButton = () => {
         console.error('click', counter++);
       });
     },
-    initEventListeners () {
-      this._addEventListeners();
-    },
     get client () {
-      const $element = this._createElement();
-      this._addEventListeners($element);
-      return this.$button;
+      const $element = this.createElement();
+
+      this.initEventListeners($element);
+
+      return $element;
     },
     get server () {
-      return `<div class="button" data-has-event="true">Click me baby!</div>`;
+      return `<div class="button">Click me baby!</div>`;
     }
   };
 };
@@ -52,12 +50,12 @@ const ssr = {
   }
 };
 
-ssr.render(createButton(), document.getElementById('root'));
-// ssr.hydrate(createButton());
+// ssr.render(buttonComponent(), document.getElementById('root'));
+ssr.hydrate(buttonComponent());
 
 if (!isClient) {
   module.exports = {
     ssr,
-    createButton
+    buttonComponent
   };
 }

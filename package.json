@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:ssr": "nodemon process.env.FOO='FOO' server/index.js",
+    "start:ssr": "nodemon server/index.js",
     "start:spa": "static-server"
   },
   "author": "",
